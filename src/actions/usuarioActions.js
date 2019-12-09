@@ -18,7 +18,7 @@ const traer_todos = () => {
         } catch (error) {
             dispatch({
                 type:ERROR,
-                payload:'Algo Salió mal, intente mas tarde.'
+                payload:'Información de usuario no disponible.'
             })
         }
     }

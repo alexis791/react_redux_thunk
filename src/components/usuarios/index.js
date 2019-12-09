@@ -15,7 +15,10 @@ import '../../css/iconos.css'
 class Usuarios extends Component {
 
    componentDidMount() {
-    this.props.usuariosTraerTodos()
+     if(!this.props.usuarios.length){
+       this.props.usuariosTraerTodos()
+     }
+    // this.props.usuariosTraerTodos()
   }
 
   ponerContenido = () => {
