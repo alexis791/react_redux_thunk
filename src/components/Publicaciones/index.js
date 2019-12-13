@@ -3,19 +3,18 @@ import { connect } from 'react-redux'
 
 /**Actions - Redux */
 import usuariosTraerTodos from '../../actions/usuarioActions'
-import { traerPorUsuario } from '../../actions/publicacionesActions'
+import { traerPorUsuario, abrirCerrar, traerComentarios } from '../../actions/publicacionesActions'
 
 /**Components */
 import Spinner from '../general/Spinner'
 import Fatal from '../general/Fatal'
+import Comentarios from './Comentarios'
 
 
 class Publicaciones extends React.Component{
 
     async componentDidMount(){
         const {
-            usuariosTraerTodos,
-            publicacionesTraerPorUsuarios,
             match: { params: { key } }
         } = this.props
 
@@ -85,11 +84,11 @@ class Publicaciones extends React.Component{
     }
 
     mostrarInfo = (publicaciones, pub_key) => (
-        publicaciones.map( (publicacion) => (
+        publicaciones.map( (publicacion, com_key) => (
             <div 
                 className='pub_titulo'
                 key={publicacion.id}    
-                onClick= { () => alert(publicacion.id)}
+                onClick= { () => this.mostrarComentarios(pub_key, com_key, publicacion.comentarios) }
             >
                 <h2>
                     { publicacion.title }
@@ -97,12 +96,21 @@ class Publicaciones extends React.Component{
                 <h3>
                     { publicacion.body }
                 </h3>
+                {
+                    (publicacion.abierto) ? <Comentarios comentarios={publicacion.comentarios}/> : ''
+                }
             </div>
         ) )
     )
 
+    mostrarComentarios = (pub_key, com_key, comentarios) => {
+        this.props.abrirCerrar(pub_key, com_key)
+        if (!comentarios.length) {
+            this.props.traerComentarios(pub_key, com_key)
+        }
+    }
+
     render(){
-        console.log(this.props)
         return(
             <div>
                 
@@ -123,7 +131,9 @@ const mapStateToProps = ({ usuariosReducer, publicacionesReducer }) => {
 
 const mapDispatchToProps = {
     usuariosTraerTodos,
-    traerPorUsuario
+    traerPorUsuario,
+    abrirCerrar,
+    traerComentarios
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Publicaciones)

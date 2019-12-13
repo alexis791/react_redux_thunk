@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 const Tabla = (props) => {
-
-    console.log(props)
     const ponerFilas = () => (
         props.usuarios.map( (usuario, key) => (
             <tr key={usuario.id}>
